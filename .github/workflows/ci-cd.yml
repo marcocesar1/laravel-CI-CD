@@ -16,11 +16,8 @@ jobs:
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "Exampllle1"
-          echo "Exampllle2"
-          echo "${{ secrets.DEPLOY_KEY }}"
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/github
-          chmod 600 ~/.ssh/github
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
@@ -29,5 +26,6 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.PORT }}
           script: |
             rsync -avz --delete ./ ${{ secrets.USER }}@${{ secrets.REMOTE_HOST }}:/var/www/html/
