@@ -18,6 +18,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "Exampllle1"
           echo "Exampllle2"
+          echo "${{ secrets.DEPLOY_KEY }}"
           echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/github
           chmod 600 ~/.ssh/github
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
