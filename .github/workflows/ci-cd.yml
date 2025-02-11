@@ -30,3 +30,13 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./"
         target: "/var/www/html/test"
+
+    - name: Run docker-compose up
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/html/test
+          docker-compose up -d
