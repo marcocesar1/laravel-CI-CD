@@ -1,0 +1,47 @@
+version: "3.3"
+name: nibble-base
+services:
+
+    # PHP service
+    example_app:
+        build: .
+        container_name: example_app
+        working_dir: "/var/www"
+        volumes:
+            - ../:/var/www
+            - ./docker-php-custom.ini:/usr/local/etc/php/conf.d/docker-php-custom.ini
+        networks:
+            - app-network-example
+    
+    example_db:
+        image: postgres:15
+        container_name: example_db
+        ports:
+            - '5441:5432'
+        environment:
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        volumes:
+            - './db:/var/lib/postgresql/data'
+        networks:
+            - app-network-example
+        healthcheck:
+          test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+
+    # Nginx service
+    example_nginx:
+        image: nginx:alpine
+        container_name: example_nginx
+        ports:
+            - 8080:80
+        volumes:
+            - ../:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network-example
+
+networks:
+    app-network-example:
+        driver: bridge
