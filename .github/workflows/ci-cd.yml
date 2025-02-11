@@ -3,29 +3,21 @@ name: Deploy to DigitalOcean
 on:
   push:
     branches:
-      - main  # Cambia esto si usas otra rama
+      - main
 
 jobs:
-  deploy:
+  check-ssh:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy with rsync
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            rsync -avz --delete ./ ${{ secrets.USER }}@${{ secrets.REMOTE_HOST }}:/var/www/html/
+    - name: Test SSH connection
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "SSH connection successful"
