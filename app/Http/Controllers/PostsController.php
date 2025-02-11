@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Services\GenericService;
 
-class PostsController extends Controller
+class PostsController extends GenericController
 {
+    public function __construct()
+    {
+        parent::__construct(
+            service: new class(
+                model: new Post(),
+            ) extends GenericService {}
+        );
+    }
+
     public function index()
     {
         $posts = \App\Models\Post::query()->latest()->get();
 
-        return response()->json($posts);
-    }
-
-    public function store(Request $request)
-    {
-        $post = new \App\Models\Post();
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->save();
-
         return response()->json([
-            'data' => $post,
+            'data' => $posts,
         ]);
     }
 }
