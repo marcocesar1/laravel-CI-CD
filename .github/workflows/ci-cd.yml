@@ -53,5 +53,5 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/test
+          cd /var/www/html/test/docker
           docker-compose up -d
