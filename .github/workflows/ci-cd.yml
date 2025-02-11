@@ -48,5 +48,5 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/test/docker
-          docker exec -it example_app bash -c "composer install"
+          cd /var/www/html/test
+          docker-compose exec -T example_app bash -c "composer install --no-dev --prefer-dist --optimize-autoloader"
