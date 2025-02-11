@@ -21,12 +21,10 @@ jobs:
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        uses: AEnterprise/rsync-deploy@v1.0
-        env:
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          switches: -avz --delete  # Opciones de rsync
-          path: ./  # Carpeta a sincronizar
-          remote_path: /var/www/html/ # Ruta en el servidor
-          remote_host: ${{ secrets.REMOTE_HOST }}  # IP del servidor
-          remote_user: ${{ secrets.USER }}  # Usuario SSH en el servidor
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            rsync -avz --delete ./ ${{ secrets.USER }}@${{ secrets.REMOTE_HOST }}:/var/www/html/
