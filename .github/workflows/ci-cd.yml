@@ -31,21 +31,6 @@ jobs:
         source: "./"
         target: "/var/www/html/test"
 
-    - name: Run composer install with Docker
-      uses: appleboy/ssh-action@v1.2.0
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd /var/www/html/test
-          docker run --rm \
-            -u "$(id -u):$(id -g)" \
-            -v "$(pwd):/var/www/html" \
-            -w /var/www/html \
-            laravelsail/php84-composer:latest \
-            composer install --ignore-platform-reqs        
-
     - name: Run docker-compose up
       uses: appleboy/ssh-action@v1.2.0
       with:
@@ -55,3 +40,13 @@ jobs:
         script: |
           cd /var/www/html/test/docker
           docker-compose up -d
+
+    - name: Composer install
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/html/test/docker
+          docker exec -it example_app bash -c "composer install"
