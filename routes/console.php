@@ -12,4 +12,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('app:create-random-orders-command')->everySecond();
 
-Schedule::job(new CreateRandomOrdersJob)->everyTwoMinutes();
+Schedule::job(new CreateRandomOrdersJob)->everyTwoSeconds();
