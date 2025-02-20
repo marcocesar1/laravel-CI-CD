@@ -10,6 +10,8 @@ services:
         volumes:
             - ../:/var/www
             - ./docker-php-custom.ini:/usr/local/etc/php/conf.d/docker-php-custom.ini
+            - ./cron/root_crontab:/var/spool/cron/crontabs/root
+            - ./queue/laravel_worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
         networks:
             - app-network-example
     
