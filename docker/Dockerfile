@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y git 
+RUN apt-get update && apt-get install -y git cron nano procps supervisor
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql

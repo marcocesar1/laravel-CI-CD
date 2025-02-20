@@ -13,3 +13,9 @@ Route::get('/user', function (Request $request) {
 
 
 Route::resource('posts', \App\Http\Controllers\PostsController::class);
+
+Route::get('test', function () {
+    \App\Jobs\CreateRandomOrdersJob::dispatch();
+    
+    return response()->json(['status' => 'ok']);
+});
