@@ -14,8 +14,10 @@ Route::get('/user', function (Request $request) {
 
 Route::resource('posts', \App\Http\Controllers\PostsController::class);
 
-Route::get('test', function () {
-    \App\Jobs\CreateRandomOrdersJob::dispatch();
-    
-    return response()->json(['status' => 'ok']);
+Route::get('orders', function () {
+    $orders = \App\Models\Order::with('user', 'items')->paginate(100);
+
+    return response()->json([
+        'data' => $orders,
+    ]);
 });
