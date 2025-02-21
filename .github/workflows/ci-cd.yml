@@ -30,3 +30,21 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./"
         target: "/var/www/html/test"
+
+    - name: Start Supervisor inside Docker
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker exec -it example_app bash -c "service supervisor start"
+
+    - name: Start Cron inside Docker
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker exec -it example_app bash -c "service cron start"
