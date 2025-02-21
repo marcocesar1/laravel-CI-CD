@@ -35,4 +35,5 @@ COPY ./task/root_crontab /var/spool/cron/crontabs/marco
 WORKDIR /var/www/public
 
 RUN crontab /var/spool/cron/crontabs/marco
-#CMD service cron start && supervisord -n
+
+CMD service cron start && supervisord -n
