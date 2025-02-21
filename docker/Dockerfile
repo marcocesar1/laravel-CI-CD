@@ -29,6 +29,10 @@ RUN docker-php-ext-enable imagick
 #COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+COPY ./task/root_crontab /var/spool/cron/crontabs/marco
 
 # Set working directory
 WORKDIR /var/www/public
+
+RUN crontab /var/spool/cron/crontabs/marco
+CMD service cron start && supervisord -n
