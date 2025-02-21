@@ -13,7 +13,7 @@ class CreateRandomOrdersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-random-orders-command';
+    protected $signature = 'app:test-command';
 
     /**
      * The console command description.
@@ -27,6 +27,6 @@ class CreateRandomOrdersCommand extends Command
      */
     public function handle()
     {
-        Log::info('Command executed every minute');
+        Log::info('Command executed successfully');
     }
 }
