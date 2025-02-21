@@ -38,7 +38,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          docker exec -it example_app bash -c "service supervisor start"
+          docker exec example_app service supervisor start
 
     - name: Start Cron inside Docker
       uses: appleboy/ssh-action@v1.2.0
@@ -47,4 +47,5 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          docker exec -it example_app bash -c "service cron start"
+          docker exec example_app service cron start
+
